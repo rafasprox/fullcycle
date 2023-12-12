@@ -1,0 +1,10 @@
+FROM golang:latest as build-stage
+WORKDIR /src
+COPY hello.go .
+RUN go build hello.go
+
+
+FROM scratch  as production-stage
+WORKDIR /root/
+COPY --from=build-stage /src/hello .
+CMD [ "./hello" ]
